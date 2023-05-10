@@ -200,6 +200,7 @@ export default env => {
           use: {
             loader: '@callstack/repack/assets-loader',
             options: {
+              inline: true,
               platform,
               devServerEnabled: Boolean(devServer),
               /**
@@ -240,7 +241,7 @@ export default env => {
         exposes: {
           './IncreaseCountButton': './src/components/IncreaseCountButton.tsx',
           './Home': './src/screens/Home.tsx',
-          // './ZustandRemoteStore': './src/store/zustand/index.ts'
+          './ZustandRemoteStore': './src/store/zustand/index.ts'
         },
         remotes: {
           host: 'host@dynamic',
@@ -248,30 +249,25 @@ export default env => {
         shared: {
           react: {
             ...Repack.Federated.SHARED_REACT,
-            eager: true, // to be figured out
+            // eager: false, // to be figured out
             requiredVersion: '18.2.0',
           },
           'react-native': {
             ...Repack.Federated.SHARED_REACT_NATIVE,
-            eager: true, // to be figured out
+            // eager: false, // to be figured out
             requiredVersion: '0.71.6',
           },
           "@react-navigation/native": {
-            eager: true,
-            singleton: true,
-            requiredVersion: "6.1.6",
+            ...Repack.Federated.SHARED_REACT
           },
           "@react-navigation/native-stack": {
-            eager: true,
-            singleton: true,
+            ...Repack.Federated.SHARED_REACT
           },
           "react-native-safe-area-context": {
-            eager: true,
-            singleton: true,
+            ...Repack.Federated.SHARED_REACT
           },
           "react-native-screens": {
-            eager: true,
-            singleton: true,
+            ...Repack.Federated.SHARED_REACT
           },
         },
       }),

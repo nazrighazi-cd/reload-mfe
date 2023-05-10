@@ -4,6 +4,9 @@ import {
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
 import {Button, SafeAreaView, ScrollView, Text, View} from 'react-native';
+import ReloadContainer from '../container/ReloadContainer';
+import PaymentScreen from './Payment';
+import OnlineBankingScreen from './Payment/OnlineBanking';
 
 const Home1 = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -58,6 +61,24 @@ const HomeScreen = () => {
     <Stack.Navigator initialRouteName="Home1">
       <Stack.Screen name="Home1" component={Home1} />
       <Stack.Screen name="Home2" component={Home2} />
+      <Stack.Screen
+        name="Reload"
+        component={ReloadContainer}
+        options={{
+          headerShown: false,
+        }}></Stack.Screen>
+      <Stack.Screen
+        name="Payment"
+        component={PaymentScreen}
+        options={{
+          headerShown: false,
+        }}></Stack.Screen>
+      <Stack.Screen
+        name="Bank"
+        component={OnlineBankingScreen}
+        options={{
+          headerShown: false,
+        }}></Stack.Screen>
     </Stack.Navigator>
   );
 };

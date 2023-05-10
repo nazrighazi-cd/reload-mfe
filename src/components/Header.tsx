@@ -9,7 +9,9 @@ const Header = () => {
           source={require('../assets/icons/arrow-previous.png')}></Image>
       </View>
       <View style={style.titleContainer}>
-        <Text style={style.title}>Reload</Text>
+        <Text style={style.title} className="font-['Poppins-SemiBold']">
+          Reload
+        </Text>
       </View>
     </View>
   );
