@@ -31,13 +31,7 @@ phases:
   #     - echo $sonar_host_url
   #     - echo $sonar_username
 
-  # build:
-  #   commands:
-  #     - pwd
-  #     - ls -l
-  #     - chmod 755 audit-scan.sh
-  #     - ./audit-scan.sh
-  #     - chmod 755 unit-test.sh
-  #     - ./unit-test.sh
-  #     - chmod 755 build-sonarqube.sh
-  #     - ./build-sonarqube.sh
+  build:
+    commands:
+      - npm run bundle:android
+      - npm run bundle:ios
