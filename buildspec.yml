@@ -1,0 +1,43 @@
+version: 0.2
+
+# env:
+#   parameter-store:
+#     sonar_username: "/devops/sonarqube/user"
+#     sonar_password: "/devops/sonarqube/password"
+#     sonar_scanner: "/devops/sonarqube/scanner"
+#     sonar_host: "/devops/sonarqube/host"
+
+phases:
+  install:
+    commands:
+      - node -v
+      - npm install --global yarn
+      # Why the duplication with preinstall: npm loads the .npmrc before running preinstall, and will point to npm registry instead
+      # Therefore, for CI, running it before the preinstall is necessary.
+      # Preinstall in necessary for developer convenience. Logging in twice should be fine
+      - yarn
+      # - aws s3 cp s3://devops-sonarqube-scanner/$sonar_scanner.zip .
+      # - unzip $sonar_scanner.zip
+      # - mv sonar-scanner*linux sonar_scanner
+
+  # pre_build:
+  #   commands:
+  #     - echo $REPOSITORY_NAME
+  #     - scanner=$sonar_scanner
+  #     - sonar_host_url=$sonar_host
+  #     - sonar_project_key=$REPOSITORY_NAME
+  #     - echo $sonar_project_key
+  #     - echo $scanner
+  #     - echo $sonar_host_url
+  #     - echo $sonar_username
+
+  # build:
+  #   commands:
+  #     - pwd
+  #     - ls -l
+  #     - chmod 755 audit-scan.sh
+  #     - ./audit-scan.sh
+  #     - chmod 755 unit-test.sh
+  #     - ./unit-test.sh
+  #     - chmod 755 build-sonarqube.sh
+  #     - ./build-sonarqube.sh
