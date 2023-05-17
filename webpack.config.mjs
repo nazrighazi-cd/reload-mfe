@@ -161,7 +161,9 @@ export default env => {
             /node_modules(.*[/\\])+metro/,
             /node_modules(.*[/\\])+abort-controller/,
             /node_modules(.*[/\\])+@callstack\/repack/,
-            /node_modules(.*[/\\])+nativewind/,
+            /node_modules(.*[/\\])+nativewind/, 
+            // /node_modules(.*[/\\])+react-native-reanimated/,
+                  
           ],
           use: 'babel-loader',
         },
@@ -267,8 +269,17 @@ export default env => {
             ...Repack.Federated.SHARED_REACT
           },
           "react-native-screens": {
+            ...Repack.Federated.SHARED_REACT,
+          },
+          "react-native-device-info":{
             ...Repack.Federated.SHARED_REACT
           },
+          "react-native-webview":{
+            ...Repack.Federated.SHARED_REACT
+          },
+          // "react-native-reanimated":{
+          //   ...Repack.Federated.SHARED_REACT
+          // }
         },
       }),
     ],

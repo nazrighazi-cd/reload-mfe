@@ -4,22 +4,26 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface IState {
   ssi: string;
+  onlineDenomination: [];
+  selectedReload: any;
+  frameHeight: number;
   updateSSI: (ssi: string) => void;
+  updateOnlineDenomination: (data) => void;
+  updateSelectedReload: (reload) => void;
+  updateFrameHeight: (height) => void;
 }
 
 const useZustandStoreRemote = create<IState>()(
-  devtools(
-    persist(
-      set => ({
-        ssi: '',
-        updateSSI: ssi => set(() => ({ssi: ssi})),
-      }),
-      {
-        name: 'zustand-storage',
-        storage: createJSONStorage(() => AsyncStorage),
-      },
-    ),
-  ),
+  devtools(set => ({
+    ssi: '',
+    onlineDenomination: [],
+    selectedReload: {},
+    frameHeight: 0,
+    updateSSI: ssi => set(() => ({ssi: ssi})),
+    updateOnlineDenomination: data => set(() => ({onlineDenomination: data})),
+    updateSelectedReload: reload => set(() => ({selectedReload: reload})),
+    updateFrameHeight: height => set(() => ({frameHeight: height})),
+  })),
 );
 
 export type TUseZustandStore = typeof useZustandStoreRemote;

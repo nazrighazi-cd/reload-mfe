@@ -1,13 +1,18 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
-const Header = () => {
+const Header = ({onPress}) => {
+  console.log('press', onPress);
   return (
     <View style={style.container}>
-      <View style={style.backButton}>
+      <TouchableOpacity
+        style={style.backButton}
+        className="z-20"
+        onPress={onPress}>
         <Image
           style={{width: 16, height: 16}}
           source={require('../assets/icons/arrow-previous.png')}></Image>
-      </View>
+      </TouchableOpacity>
       <View style={style.titleContainer}>
         <Text style={style.title} className="font-['Poppins-SemiBold']">
           Reload
