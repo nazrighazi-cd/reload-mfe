@@ -99,7 +99,7 @@ const ReloadContainer = (props: Props) => {
     isError,
   } = useQuery('onlineDenomination', getOnlineDenomination, {
     onSuccess: onlineDenominations => {
-      if (!!onlineDenominations?.error) {
+      if (!isEmpty(onlineDenominations?.error)) {
         setErrorResp(true);
         return;
       }
@@ -194,6 +194,7 @@ const ReloadContainer = (props: Props) => {
   const handleReload = () => {
     const values = pinValue;
     const userRecord = getUserRecord();
+    console.log('pin', values);
     if (values) {
       const onlyNums = values && values.replace(/[^\d]/g, '');
       // const msisdn =
@@ -209,7 +210,6 @@ const ReloadContainer = (props: Props) => {
           const {VoucherReloadResponse} = data || ({} as any);
           const {PrepaidAccount} = VoucherReloadResponse || ({} as any);
           const {VoucherFaceValue} = PrepaidAccount || ({} as any);
-
           if (isSuccess) {
             // MYDIGI3-2629 track reload_success
 
@@ -230,7 +230,14 @@ const ReloadContainer = (props: Props) => {
             navigation.navigate('Modal', {config});
           }
         })
-        .catch(ex => {})
+        .catch(ex => {
+          const config = {
+            success: false,
+            message: 'Pin Success',
+          };
+
+          props.navigation.navigate('Modal', {config});
+        })
         .finally(() => {
           // this.setState({buttonDisable: false});
         });
