@@ -9,24 +9,7 @@ phases:
     commands:
       - node -v
       - npm install --global yarn
-      # Why the duplication with preinstall: npm loads the .npmrc before running preinstall, and will point to npm registry instead
-      # Therefore, for CI, running it before the preinstall is necessary.
-      # Preinstall in necessary for developer convenience. Logging in twice should be fine
       - yarn
-      # - aws s3 cp s3://devops-sonarqube-scanner/$sonar_scanner.zip .
-      # - unzip $sonar_scanner.zip
-      # - mv sonar-scanner*linux sonar_scanner
-
-  # pre_build:
-  #   commands:
-  #     - echo $REPOSITORY_NAME
-  #     - scanner=$sonar_scanner
-  #     - sonar_host_url=$sonar_host
-  #     - sonar_project_key=$REPOSITORY_NAME
-  #     - echo $sonar_project_key
-  #     - echo $scanner
-  #     - echo $sonar_host_url
-  #     - echo $sonar_username
 
   build:
     commands:
@@ -35,13 +18,8 @@ phases:
 
   post_build:
     commands:
-      - echo Entered the post_build phase...
-      - echo Build completed on `date`
       - aws appconfig create-hosted-configuration-version --region us-east-1 --application-id pek2ts6 --configuration-profile-id ebiweto --content $CODEBUILD_BUILD_NUMBER --content-type "text/plain" configuration_version_output_file
-      - "echo configuration_version_output_file generated with the following output:"
-      - cat configuration_version_output_file
 
-  # BUILD NUMBER FOR DEV, USE CODEBUILD_BUILD_NUMBER
 artifacts:
   files:
     - '**/*'
