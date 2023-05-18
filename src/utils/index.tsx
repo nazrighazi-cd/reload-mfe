@@ -6,13 +6,13 @@ import {Dimensions} from 'react-native';
 const URL = require('url-parse');
 const R = require('ramda');
 
-export function getSSI() {
-  // const ssi = !!store && store.getState().common && store.getState().common.ssi;
-  // return !isEmpty(ssi) ? ssi : Math.random();
+// export function getSSI() {
+//   // const ssi = !!store && store.getState().common && store.getState().common.ssi;
+//   // return !isEmpty(ssi) ? ssi : Math.random();
 
-  return 's%3AJMg-14Zej-W_IrY-QSUsz6RiVoQa-JSj.A5s7GDNGWreSEEsVL%2BkM%2BECrZqyZgHV0iC2CcdIRHcU';
-  // return 'ss';
-}
+//   return 's%3AJMg-14Zej-W_IrY-QSUsz6RiVoQa-JSj.A5s7GDNGWreSEEsVL%2BkM%2BECrZqyZgHV0iC2CcdIRHcU';
+//   // return 'ss';
+// }
 
 export function getUserRecord() {
   // const userRecord =

@@ -18,6 +18,7 @@ import {deviceHeight, exNameEmail, fullURL, getUserRecord} from '../../utils';
 import {GETHeader, ServiceList, reloadByPin} from '../../services';
 import useZustandStoreRemote from '../../store/zustand';
 import PinReload from '../../screens/Reload/PinReload';
+import useTokeStore from 'mfe_poc_main/ZustandStore';
 import _ from 'lodash';
 
 type ItemData = {
@@ -71,12 +72,6 @@ const formatNumber = (numb: number) => {
   return theNum.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 };
 
-const getOnlineDenomination = () => {
-  return xFetch(fullURL(ServiceList.loadOnlineDenominations), {
-    method: 'GET',
-    header: GETHeader(),
-  });
-};
 
 const ReloadContainer = (props: Props) => {
   let {navigation} = props;
@@ -86,12 +81,21 @@ const ReloadContainer = (props: Props) => {
   const [tabOption, setTabOption] = useState<string>('reload');
   const [ErrorResp, setErrorResp] = useState<boolean>(false);
   const {updateFrameHeight} = useZustandStoreRemote();
+  const { ssi } = useTokeStore();
   const {
     onlineDenomination,
     updateOnlineDenomination,
     selectedReload,
     updateSelectedReload,
   } = useZustandStoreRemote();
+
+
+const getOnlineDenomination = () => {
+  return xFetch(fullURL(ServiceList.loadOnlineDenominations), {
+    method: 'GET',
+    header: GETHeader(ssi),
+  });
+};
 
   const {
     data: onlineDenominations,
@@ -103,6 +107,8 @@ const ReloadContainer = (props: Props) => {
         setErrorResp(true);
         return;
       }
+      console.log('res1',ssi);
+
       const res = onlineReloadData(
         onlineDenominations?.data?.reloadVoiceDemoninations?.items,
       );
