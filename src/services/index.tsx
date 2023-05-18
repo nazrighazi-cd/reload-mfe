@@ -9,9 +9,10 @@ export const ServiceList: any = {
   ReloadPIN: 'api/reload/pin',
 };
 
-export const GETHeader = (obj?) => {
+export const GETHeader = (digiauth) => {
   const headers: any = {
     Accept: 'application/json',
+    digiauth
   };
 
   return headers;

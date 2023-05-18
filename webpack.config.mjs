@@ -112,7 +112,7 @@ export default env => {
       path: path.join(dirname, 'build/generated', platform),
       filename: 'index.bundle',
       chunkFilename: '[name].chunk.bundle',
-      publicPath: Repack.getPublicPath({platform, devServer}),
+      publicPath: Repack.getPublicPath({ platform, devServer }),
     },
     /**
      * Configures optimization of the built bundle.
@@ -239,47 +239,35 @@ export default env => {
       }),
 
       new Repack.plugins.ModuleFederationPlugin({
-        name: 'app1',
+        name: 'reload',
         exposes: {
-          './IncreaseCountButton': './src/components/IncreaseCountButton.tsx',
-          './Home': './src/screens/Home.tsx',
-          './ZustandRemoteStore': './src/store/zustand/index.ts'
+          './App': './App',
         },
         remotes: {
-          host: 'host@dynamic',
+          mfe_poc_main :"mfe_poc_main@dynamic",
         },
         shared: {
           react: {
             ...Repack.Federated.SHARED_REACT,
-            // eager: false, // to be figured out
             requiredVersion: '18.2.0',
           },
           'react-native': {
             ...Repack.Federated.SHARED_REACT_NATIVE,
-            // eager: false, // to be figured out
             requiredVersion: '0.71.6',
           },
-          "@react-navigation/native": {
-            ...Repack.Federated.SHARED_REACT
-          },
-          "@react-navigation/native-stack": {
-            ...Repack.Federated.SHARED_REACT
-          },
-          "react-native-safe-area-context": {
-            ...Repack.Federated.SHARED_REACT
-          },
-          "react-native-screens": {
-            ...Repack.Federated.SHARED_REACT,
-          },
-          "react-native-device-info":{
-            ...Repack.Federated.SHARED_REACT
-          },
-          "react-native-webview":{
-            ...Repack.Federated.SHARED_REACT
-          },
-          // "react-native-reanimated":{
-          //   ...Repack.Federated.SHARED_REACT
-          // }
+          'nativewind':{ ...Repack.Federated.SHARED_REACT, },
+          'react-native-safe-area-context': { ...Repack.Federated.SHARED_REACT },
+          'react-native-screens':{ ...Repack.Federated.SHARED_REACT },
+          "react-native-device-info":{ ...Repack.Federated.SHARED_REACT },
+          '@react-navigation/native':{ ...Repack.Federated.SHARED_REACT },
+          '@react-navigation/native-stack':{ ...Repack.Federated.SHARED_REACT },
+          '@react-navigation/stack':{ ...Repack.Federated.SHARED_REACT },
+          'react-native-gesture-handler':{ ...Repack.Federated.SHARED_REACT },
+          'react-native-reanimated':{ singleton: true , eager:true, requiredVersion:'3.1.0', },
+          'react-native-webview':{ ...Repack.Federated.SHARED_REACT },
+          "lottie-react-native":{ ...Repack.Federated.SHARED_REACT },
+          'nativewind':{  ...Repack.Federated.SHARED_REACT },
+          'zustand': { ...Repack.Federated.SHARED_REACT },
         },
       }),
     ],

@@ -19,7 +19,7 @@ async function xFetch(
 
   if (!excludSsi && path.split('https').length > 1) {
     let headers = (!!headerOptions && headerOptions.headers) || {};
-    headers = {...headers, digiauth: getSSI()};
+    headers = {...headers };
     headerOptions = {...headerOptions, headers};
   }
 

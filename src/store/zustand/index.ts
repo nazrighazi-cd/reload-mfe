@@ -1,5 +1,4 @@
 import {create} from 'zustand';
-import {devtools, persist, createJSONStorage} from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface IState {
@@ -13,8 +12,7 @@ interface IState {
   updateFrameHeight: (height) => void;
 }
 
-const useZustandStoreRemote = create<IState>()(
-  devtools(set => ({
+const useZustandStoreRemote = create<IState>()((set) => ({
     ssi: '',
     onlineDenomination: [],
     selectedReload: {},
@@ -23,7 +21,7 @@ const useZustandStoreRemote = create<IState>()(
     updateOnlineDenomination: data => set(() => ({onlineDenomination: data})),
     updateSelectedReload: reload => set(() => ({selectedReload: reload})),
     updateFrameHeight: height => set(() => ({frameHeight: height})),
-  })),
+  }),
 );
 
 export type TUseZustandStore = typeof useZustandStoreRemote;

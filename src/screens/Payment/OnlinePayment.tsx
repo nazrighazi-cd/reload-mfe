@@ -112,9 +112,9 @@ const OnlinePayment = props => {
     const getParam = param => route.params[param] || null;
 
     const urlMaps = {
-      payment: `${Config.EComeUrl}/shop/checkout/payment`,
-      retry: `${Config.EComeUrl}/shop/checkout/payment_retry`,
-      addcard: `${Config.EComeUrl}/vault/cards/addcard/`,
+      payment: `https://qacommerce.digi.com.my/shop/checkout/payment`,
+      retry: `https://qacommerce.digi.com.my/shop/checkout/payment_retry`,
+      addcard: `https://qacommerce.digi.com.my/vault/cards/addcard/`,
     };
 
     const feature = getParam('feature');
