@@ -38,6 +38,11 @@ phases:
       - echo Entered the post_build phase...
       - echo Build completed on `date`
       - echo $CODEBUILD_BUILD_NUMBER
+      - aws appconfig create-hosted-configuration-version \
+        --application-id "pek2ts6" \
+        --configuration-profile-id "ebiweto" \
+        --content $CODEBUILD_BUILD_NUMBER \
+        --content-type "text/plain" \
 
   # BUILD NUMBER FOR DEV, USE CODEBUILD_BUILD_NUMBER
 artifacts:
