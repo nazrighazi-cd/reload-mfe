@@ -35,3 +35,15 @@ phases:
     commands:
       - npm run bundle:android
       - npm run bundle:ios
+
+  post_build:
+    commands:
+      - echo Entered the post_build phase...
+      - echo Build completed on `date`
+      - echo $CODEBUILD_BUILD_NUMBER
+
+  # BUILD NUMBER FOR DEV, USE CODEBUILD_BUILD_NUMBER
+artifacts:
+  files:
+    - 'build/generated/android/*'
+    - 'build/generated/ios/*'
