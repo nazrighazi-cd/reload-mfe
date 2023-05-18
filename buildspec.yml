@@ -37,7 +37,7 @@ phases:
     commands:
       - echo Entered the post_build phase...
       - echo Build completed on `date`
-      - aws appconfig create-hosted-configuration-version --application-id pek2ts6 --configuration-profile-id ebiweto --content $CODEBUILD_BUILD_NUMBER --content-type "text/plain" configuration_version_output_file
+      - aws appconfig create-hosted-configuration-version --region us-east-1 --application-id pek2ts6 --configuration-profile-id ebiweto --content $CODEBUILD_BUILD_NUMBER --content-type "text/plain" configuration_version_output_file
       - "echo configuration_version_output_file generated with the following output:"
       - cat configuration_version_output_file
 
