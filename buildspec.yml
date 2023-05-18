@@ -1,11 +1,7 @@
 version: 0.2
 
-# env:
-#   parameter-store:
-#     sonar_username: "/devops/sonarqube/user"
-#     sonar_password: "/devops/sonarqube/password"
-#     sonar_scanner: "/devops/sonarqube/scanner"
-#     sonar_host: "/devops/sonarqube/host"
+env:
+  buildNumber: $CODEBUILD_BUILD_NUMBER
 
 phases:
   install:
@@ -47,3 +43,4 @@ artifacts:
   files:
     - 'build/generated/android/*'
     - 'build/generated/ios/*'
+  base-directory: build/generated
