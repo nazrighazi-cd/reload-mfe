@@ -1,7 +1,8 @@
 version: 0.2
 
 env:
-  buildNumber: $CODEBUILD_BUILD_NUMBER
+  exported-variables:
+    - CODEBUILD_BUILD_NUMBER
 
 phases:
   install:
@@ -41,6 +42,5 @@ phases:
   # BUILD NUMBER FOR DEV, USE CODEBUILD_BUILD_NUMBER
 artifacts:
   files:
-    - 'build/generated/android/*'
-    - 'build/generated/ios/*'
+    - '**/*'
   base-directory: build/generated
