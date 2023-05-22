@@ -1,18 +1,21 @@
 import {InteractionManager, Platform} from 'react-native';
-import {createPublicKey, encrypt, fullURL, getUserRecord} from '../utils';
+import {createPublicKey, encrypt, fullURL} from '../utils';
 import xFetch from './xFetch';
 import DeviceInfo from 'react-native-device-info';
+//@ts-ignore
+import useTokeStore from 'mfe_poc_main/ZustandStore';
 
 export const ServiceList: any = {
   loadOnlineDenominations: 'api/reload/online',
   generatePaymentUrlV3: 'api/payments/v3/params',
   ReloadPIN: 'api/reload/pin',
+  CheckSession: 'checkSession',
 };
 
-export const GETHeader = (digiauth) => {
+export const GETHeader = digiauth => {
   const headers: any = {
     Accept: 'application/json',
-    digiauth
+    digiauth,
   };
 
   return headers;
@@ -52,7 +55,9 @@ export const GETHeader = (digiauth) => {
 // };
 
 export const GetAppContext = (obj?) => {
-  const userRecord = getUserRecord();
+  const userRecord = useTokeStore.getState().userRecord;
+  // const userRecord = getUserRecord();
+  console.log('user record', userRecord);
   const {subscriberRecord} = userRecord;
   const {MSISDN} = subscriberRecord || {
     MSISDN: null,
@@ -87,8 +92,10 @@ try {
 } catch (er) {}
 
 export const generatePaymentUrl = async data => {
-  const userRecord = getUserRecord();
+  // const userRecord = getUserRecord();
+  const userRecord = useTokeStore.getState().userRecord;
   // const userRecord = mock_userRecord;
+  console.log('gen payment', userRecord);
   const {profiles, offers} = userRecord.subscriberRecord || ({} as any);
 
   const {amount, rewardId, offerId, paymentFor} = data || ({} as any);
@@ -123,7 +130,7 @@ export const generatePaymentUrl = async data => {
 
   const payload = req;
 
-  return await xFetch(
+  return xFetch(
     fullURL(ServiceList.generatePaymentUrlV3),
     {
       method: 'POST',
@@ -134,8 +141,8 @@ export const generatePaymentUrl = async data => {
   );
 };
 
-export const reloadByPin = async data => {
-  return await xFetch(
+export const reloadByPin = data => {
+  return xFetch(
     fullURL(ServiceList.ReloadPIN),
     {
       method: 'POST',
@@ -155,6 +162,25 @@ const POSTHeader = (obj?) => {
     ...GetAppContext(obj),
   };
   return headers;
+};
+
+export const retriveSession = async (msisdn?, checkAutoLogin = '') => {
+  const ssi = useTokeStore.getState().ssi;
+  const url = `${ServiceList.CheckSession}${checkAutoLogin}`;
+  let bodyData;
+  if (!!msisdn && msisdn) {
+    bodyData = JSON.stringify(msisdn);
+  }
+
+  return xFetch(
+    fullURL(url),
+    {
+      method: 'POST',
+      headers: POSTHeader({digiauth: ssi}),
+      body: bodyData,
+    },
+    {},
+  );
 };
 
 function silent(error) {

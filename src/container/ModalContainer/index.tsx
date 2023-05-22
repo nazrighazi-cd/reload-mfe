@@ -67,7 +67,7 @@ const ModalContainer = ({navigation, route}) => {
         </View>
         <View className="mt-[20px] justify-center items-center w-100">
           <TouchableOpacity
-            onPress={() => navigation.navigate('Reload')}
+            onPress={() => navigation.replace('Home')}
             className="rounded-full bg-[#4399D9] px-[48px] py-[15px] w-fit">
             <Text className="text-white font-['Poppins-SemiBold'] text-[14px]">
               Go Back Home

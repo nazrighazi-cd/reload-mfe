@@ -267,7 +267,7 @@ const WebViewWrapper = props => {
   const saveViewProps2 = {
     style: {
       backgroundColor: '#ffe700',
-      paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+      paddingTop: 0,
     },
     // forceInset: { top: 'always', bottom: 'never' },
   } as any;

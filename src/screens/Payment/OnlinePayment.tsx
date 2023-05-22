@@ -11,7 +11,6 @@ import styled from 'styled-components/native';
 import _ from 'lodash';
 import {
   formatUrl,
-  getUserRecord,
   exNameEmail,
   // checkSessionExpired,
   deviceWidth,
@@ -22,7 +21,8 @@ import {generatePaymentUrl} from '../../services';
 import isEmpty from 'lodash/isEmpty';
 import WebView from '../../components/WebViewWrapper';
 import useZustandStoreRemote from '../../store/zustand';
-
+//@ts-ignore
+import useTokeStore from 'mfe_poc_main/ZustandStore';
 export interface Props {
   navigation?: any;
   notifications?: any;
@@ -78,9 +78,10 @@ const OnlinePayment = props => {
   const [htmlCode, setHtmlCode] = useState(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {frameHeight} = useZustandStoreRemote();
+  const {userRecord} = useTokeStore();
 
   const genarateForm = (fields, url) => {
-    const userRecord = getUserRecord();
+    // const userRecord = getUserRecord();
     // const {dguardid} = exNameEmail(userRecord);
 
     let newFields = {
@@ -106,7 +107,7 @@ const OnlinePayment = props => {
   };
 
   useEffect(() => {
-    console.log('nava', props);
+    console.log('nava', userRecord);
     const {route, navigation} = props;
 
     const getParam = param => route.params[param] || null;
@@ -202,25 +203,22 @@ const OnlinePayment = props => {
 
     let params = null;
 
-    if (
-      !!url &&
-      url.includes(Config.API_URL) &&
-      !url.includes('</form></body></html>')
-    ) {
+    if (!!url && !url.includes('</form></body></html>')) {
       objUrl = formatUrl(url);
       const {pathname, query} = objUrl || ({} as any);
+
       params = query;
-      success = url.includes('/api/payments/success');
+      success = await url.includes('/api/payments/success');
 
       const failArr = ['/api/payments/fail', '/api/payments/error'];
       fail = !!failArr.find(ul => url.includes(ul));
+      console.log('yo', pathname, query, success, fail, url);
     }
-
     // && loading === false
     if (success || fail) {
       // this function need to execute first before navigation goback
       if (!!func) {
-        const result = await func({
+        await func({
           success,
           fail,
           params: params,
@@ -283,10 +281,11 @@ const OnlinePayment = props => {
 
   return (
     <ColumnView
-      style={{
-        height: frameHeight,
-        maxHeight: frameHeight,
-      }}>
+    // style={{
+    //   height: frameHeight,
+    //   maxHeight: frameHeight,
+    // }}
+    >
       <SlViewWrapper>
         <WebView {...WVprops} />
       </SlViewWrapper>

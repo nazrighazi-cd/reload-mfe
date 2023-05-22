@@ -22,6 +22,7 @@ const PinReload = ({pinValue, changePinValue}) => {
             <View className="pl-[20px] w-full">
               <TextInput
                 editable
+                keyboardType="number-pad"
                 placeholder="Enter 15 or 16 digit PIN"
                 placeholderTextColor={'#CCCCCC'}
                 maxLength={16}

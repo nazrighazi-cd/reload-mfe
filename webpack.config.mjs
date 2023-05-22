@@ -241,7 +241,7 @@ export default env => {
       new Repack.plugins.ModuleFederationPlugin({
         name: 'reload',
         exposes: {
-          './App': './App',
+          './App': './src/screens/Home',
         },
         remotes: {
           mfe_poc_main :"mfe_poc_main@dynamic",

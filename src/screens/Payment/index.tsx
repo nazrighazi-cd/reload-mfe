@@ -11,9 +11,13 @@ import {
 } from 'react-native';
 import Header from '../../components/Header';
 import useZustandStoreRemote from '../../store/zustand';
-import {exNameEmail, getUserRecord} from '../../utils';
+import {exNameEmail, fullURL} from '../../utils';
 import isEmpty from 'lodash/isEmpty';
-
+//@ts-ignore
+import useTokeStore from 'mfe_poc_main/ZustandStore';
+import xFetch from '../../services/xFetch';
+import {GETHeader, ServiceList, retriveSession} from '../../services';
+import {useQuery} from 'react-query';
 type IPaymentMethod = {
   id: number;
   feature: string;
@@ -43,15 +47,14 @@ const PaymentScreen = props => {
   const {selectedReload} = useZustandStoreRemote();
   const [Email, setEmailAddress] = useState<string>('');
   const [selectedFeature, setSelectedFeature] = useState<string>('1');
+  const {ssi, userRecord, updateUserRecord, updateAmount} = useTokeStore();
   const {paymentFor} = props;
-
   const setEmail = () => {
     let emailVal;
     let newState = {};
 
     try {
-      const userRecord = getUserRecord() || ({} as any);
-      const {subscriberRecord} = getUserRecord() || ({} as any);
+      const {subscriberRecord} = userRecord || ({} as any);
       const {dguardInfo} = subscriberRecord || ({} as any);
 
       let {email, dguardid} = exNameEmail(userRecord) || ({} as any);
@@ -199,16 +202,35 @@ const PaymentScreen = props => {
         ...addConfig,
       };
 
+      console.log('masuk ke');
       InteractionManager.runAfterInteractions(() => {
-        // toggleCommonReciept(
-        //   config,
-        //   `${!!sku ? 'reload - online -' : 'bills - pay bill -'}`,
-        //   true,
-        // );
-        navigation.navigate('Modal', {config});
+        refetch();
+
+        if (!isLoading) {
+          props.navigation.navigate('Modal', {config});
+        }
       });
     });
   };
+
+  const getSession = async () => {
+    const msisdn = userRecord.subscriberRecord.MSISDN || null;
+    let ssResp = await retriveSession();
+    return ssResp;
+  };
+
+  const {isLoading, refetch} = useQuery('checkSession', getSession, {
+    enabled: false,
+    onSuccess: res => {
+      if (res?.data?.valid) {
+        updateUserRecord(res?.data);
+        updateAmount(
+          res?.data.subscriberRecord._raw.accountBalance.BalanceList
+            .BalanceRecord[0].Amount,
+        );
+      }
+    },
+  });
 
   const handle3Dpayment = pack => {
     const {navigation, route} = props;
@@ -320,7 +342,7 @@ const PaymentScreen = props => {
           // error message come from backend
           // if there is an error message come from backend, show it
           // otherwise show the message backoffice
-          const userRecord = getUserRecord();
+          // const userRecord = getUserRecord();
           const pack2 = {
             params,
             sku,
@@ -464,8 +486,8 @@ const PaymentScreen = props => {
   // setEmail();
 
   return (
-    <SafeAreaView>
-      <View className=" bg-[#F2F3F7] h-screen flex">
+    <SafeAreaView className="flex-1">
+      <View className=" bg-[#F2F3F7] h-screen flex-1">
         <View className="mx-[20px]">
           <Header onPress={() => props.navigation.goBack()} />
 
@@ -546,7 +568,7 @@ const PaymentScreen = props => {
           </View>
         </View>
 
-        <View className="absolute bottom-[20px] left-0 w-full">
+        <View className="absolute bottom-0 left-0 w-full">
           <View className="bg-[#fff] p-[24px] rounded-t-[20px]">
             <View className="flex flex-row justify-between">
               <View>

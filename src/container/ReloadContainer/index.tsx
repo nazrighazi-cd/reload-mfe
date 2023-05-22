@@ -1,23 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import {
+  ActivityIndicator,
   FlatList,
   Image,
-  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import isEmpty from 'lodash/isEmpty';
 import includes from 'lodash/includes';
 import Header from '../../components/Header';
 import {useQuery} from 'react-query';
 import xFetch from '../../services/xFetch';
-import {deviceHeight, exNameEmail, fullURL, getUserRecord} from '../../utils';
+import {deviceHeight, exNameEmail, fullURL} from '../../utils';
 import {GETHeader, ServiceList, reloadByPin} from '../../services';
 import useZustandStoreRemote from '../../store/zustand';
 import PinReload from '../../screens/Reload/PinReload';
+//@ts-ignore
 import useTokeStore from 'mfe_poc_main/ZustandStore';
 import _ from 'lodash';
 
@@ -72,16 +74,15 @@ const formatNumber = (numb: number) => {
   return theNum.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 };
 
-
 const ReloadContainer = (props: Props) => {
   let {navigation} = props;
   // const params = navigation && navigation.state && navigation.state.params;
   // const [selectedReloadValue, setSelectedReloadValue] = useState<ItemData>();
-  const [pinValue, updatePinValue] = useState<string>();
+  const [pinValue, updatePinValue] = useState<string>('');
   const [tabOption, setTabOption] = useState<string>('reload');
   const [ErrorResp, setErrorResp] = useState<boolean>(false);
   const {updateFrameHeight} = useZustandStoreRemote();
-  const { ssi } = useTokeStore();
+  const {ssi, userRecord} = useTokeStore();
   const {
     onlineDenomination,
     updateOnlineDenomination,
@@ -89,13 +90,12 @@ const ReloadContainer = (props: Props) => {
     updateSelectedReload,
   } = useZustandStoreRemote();
 
-
-const getOnlineDenomination = () => {
-  return xFetch(fullURL(ServiceList.loadOnlineDenominations), {
-    method: 'GET',
-    header: GETHeader(ssi),
-  });
-};
+  const getOnlineDenomination = () => {
+    return xFetch(fullURL(ServiceList.loadOnlineDenominations), {
+      method: 'GET',
+      header: GETHeader(ssi),
+    });
+  };
 
   const {
     data: onlineDenominations,
@@ -107,14 +107,14 @@ const getOnlineDenomination = () => {
         setErrorResp(true);
         return;
       }
-      console.log('res1',ssi);
 
-      const res = onlineReloadData(
-        onlineDenominations?.data?.reloadVoiceDemoninations?.items,
-      );
-      console.log('res', res);
-      updateOnlineDenomination(res);
-      updateSelectedReload(res[0]);
+      if (onlineDenominations?.data?.reloadVoiceDemoninations?.items) {
+        const res = onlineReloadData(
+          onlineDenominations?.data?.reloadVoiceDemoninations?.items,
+        );
+        updateOnlineDenomination(res);
+        updateSelectedReload(res[0]);
+      }
     },
   });
 
@@ -171,7 +171,7 @@ const getOnlineDenomination = () => {
   };
 
   const changePinValue = (value: string) => {
-    updatePinValue(value);
+    updatePinValue(value.replace(/[^0-9]/g, ''));
   };
 
   const onClickNext = () => {
@@ -199,7 +199,6 @@ const getOnlineDenomination = () => {
 
   const handleReload = () => {
     const values = pinValue;
-    const userRecord = getUserRecord();
     console.log('pin', values);
     if (values) {
       const onlyNums = values && values.replace(/[^\d]/g, '');
@@ -301,13 +300,17 @@ const getOnlineDenomination = () => {
   }, []);
 
   if (isLoading || isError) {
-    return <Text>Loading</Text>;
+    return (
+      <View style={{flex: 1, justifyContent: 'center'}}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView className="flex-1">
       <View
-        className="bg-[#F2F3F7] h-screen flex"
+        className="bg-[#F2F3F7] h-screen flex-1"
         onLayout={obj => {
           const {nativeEvent} = obj || ({} as any);
           const {layout} = nativeEvent || ({} as any);
@@ -373,20 +376,22 @@ const getOnlineDenomination = () => {
               <Text className="text-[#333333] font-semibold text-[14px] font-['Poppins-SemiBold']">
                 Reload Amount
               </Text>
-              <FlatList
-                data={onlineDenomination}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
-                extraData={selectedReload}
-                contentInset={{bottom: 130}}
-              />
+              {!!onlineDenomination && (
+                <FlatList
+                  data={onlineDenomination}
+                  renderItem={renderItem}
+                  keyExtractor={item => item.id}
+                  extraData={selectedReload}
+                  contentInset={{bottom: 130}}
+                />
+              )}
             </View>
           ) : (
             <PinReload pinValue={pinValue} changePinValue={changePinValue} />
           )}
         </View>
 
-        <View className="absolute bottom-[20px] left-0 w-full">
+        <View className="absolute bottom-0 left-0 w-full">
           <View className="bg-[#fff] p-[24px] rounded-t-[20px]">
             <View className="flex flex-row justify-between">
               {tabOption == 'reload' && (
@@ -401,13 +406,17 @@ const getOnlineDenomination = () => {
               )}
               <TouchableOpacity
                 onPress={() => onClickNext()}
-                disabled={tabOption == 'reload' && isEmpty(selectedReload)}
+                disabled={
+                  (tabOption == 'reload' && isEmpty(selectedReload)) ||
+                  (tabOption == 'pin' && pinValue.length < 15)
+                }
                 className={`${tabOption == 'pin' && 'w-full'} r`}>
                 <View
                   className={`py-[15px] px-[75px]  rounded-[30px] ${
                     tabOption == 'pin' && 'w-full items-center'
                   } ${
-                    tabOption == 'reload' && isEmpty(selectedReload)
+                    (tabOption == 'reload' && isEmpty(selectedReload)) ||
+                    (tabOption == 'pin' && pinValue.length < 15)
                       ? 'bg-[#CCCCCC]'
                       : 'bg-[#4399D9]'
                   }`}>

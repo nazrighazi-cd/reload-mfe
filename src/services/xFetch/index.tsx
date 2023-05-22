@@ -1,5 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
-import {getSSI} from '../../utils';
+// import {getSSI} from '../../utils';
 
 const TIME_OUT = 120000;
 
@@ -19,7 +19,7 @@ async function xFetch(
 
   if (!excludSsi && path.split('https').length > 1) {
     let headers = (!!headerOptions && headerOptions.headers) || {};
-    headers = {...headers };
+    headers = {...headers};
     headerOptions = {...headerOptions, headers};
   }
 
