@@ -16,9 +16,9 @@ phases:
       - npm run bundle:android
       - npm run bundle:ios
 
-  post_build:
-    commands:
-      - aws lambda invoke --function-name mfe-update-appconfig --region ap-southeast-1 --payload file://lambda-payload.json response.json
+  # post_build:
+  #   commands:
+  #     - aws lambda invoke --function-name mfe-update-appconfig --region ap-southeast-1 --payload file://lambda-payload.json response.json
 
 artifacts:
   files:
