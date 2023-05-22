@@ -18,7 +18,7 @@ phases:
 
   post_build:
     commands:
-      - aws appconfig create-hosted-configuration-version --region us-east-1 --application-id pek2ts6 --configuration-profile-id ebiweto --content $CODEBUILD_BUILD_NUMBER --content-type "text/plain" configuration_version_output_file
+      - "aws lambda invoke --function-name mfe-update-appconfig --region ap-southeast-1 --payload '{ \"targetModule\": \"reload\", \"version\": \"$CODEBUILD_BUILD_NUMBER\" }'"
 
 artifacts:
   files:
