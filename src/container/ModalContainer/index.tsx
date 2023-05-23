@@ -44,7 +44,7 @@ const ModalContainer = ({navigation, route}) => {
         </View>
         <View className="py-[30px] items-center justify-center">
           <Text className="font-['Poppins-SemiBold'] text-[20px]">
-            {config.success ? 'Awesome' : 'Oops! Try Again'}
+            {config.success ? 'Awesome' : 'Oops! Please Try Again'}
           </Text>
           <Text className="font-['Poppins-Regular'] text-[16px]">
             {config.success ? 'Reload Successfully!' : 'Reload Unsuccessful!'}
