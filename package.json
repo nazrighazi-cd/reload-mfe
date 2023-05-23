@@ -9,8 +9,8 @@
     "start": "react-native webpack-start --port 9000",
     "start:standalone": "STANDALONE=1 react-native webpack-start",
     "test": "jest",
-    "bundle:ios": "webpack -c webpack.config.mjs --env platform=ios --env mode=production",
-    "bundle:android": "webpack -c webpack.config.mjs --env platform=android --env mode=production"
+    "bundle-ios": "react-native webpack-bundle --platform='ios' --entry-file=index.js --dev=false",
+    "bundle-android": "react-native webpack-bundle --platform='android' --entry-file=index.js --dev=false"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.18.1",
