@@ -397,7 +397,7 @@ const ReloadContainer = (props: Props) => {
               {tabOption == 'reload' && (
                 <View>
                   <Text className="text-[12px] font-['Poppins-Regular'] text-[#333333]">
-                    Total Amounts
+                    Total Amount
                   </Text>
                   <Text className="font-semibold text-[22px] font-['Poppins-SemiBold'] text-[#333333]">
                     {selectedReload.title}
