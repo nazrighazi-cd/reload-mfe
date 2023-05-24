@@ -50,21 +50,28 @@ const ModalContainer = ({navigation, route}) => {
             {config.success ? 'Reload Successfully!' : 'Reload Unsuccessful!'}
           </Text>
         </View>
-        <View className="border border-[#DDDDDD] mb-[30px]"></View>
-        <View className=" flex flex-row justify-between">
-          <Text className="font-['Poppins-Regular'] text-[16px]">
-            Reload Amount
-          </Text>
-          <Text className="font-['Poppins-SemiBold'] text-[16px]">
-            {selectedReload.title}
-          </Text>
-        </View>
-        <View className="flex flex-row justify-between">
-          <Text className="font-['Poppins-Regular'] text-[16px]">Validity</Text>
-          <Text className="font-['Poppins-SemiBold'] text-[16px]">
-            {selectedReload.text}
-          </Text>
-        </View>
+        {!config?.disableAmount && (
+          <>
+            <View className="border border-[#DDDDDD] mb-[30px]"></View>
+            <View className=" flex flex-row justify-between">
+              <Text className="font-['Poppins-Regular'] text-[16px]">
+                Reload Amount
+              </Text>
+              <Text className="font-['Poppins-SemiBold'] text-[16px]">
+                {selectedReload.title}
+              </Text>
+            </View>
+            <View className="flex flex-row justify-between">
+              <Text className="font-['Poppins-Regular'] text-[16px]">
+                Validity
+              </Text>
+              <Text className="font-['Poppins-SemiBold'] text-[16px]">
+                {selectedReload.text}
+              </Text>
+            </View>
+          </>
+        )}
+
         <View className="mt-[20px] justify-center items-center w-100">
           <TouchableOpacity
             onPress={() => navigation.replace('Home')}

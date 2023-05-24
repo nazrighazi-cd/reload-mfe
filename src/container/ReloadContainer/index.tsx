@@ -221,6 +221,7 @@ const ReloadContainer = (props: Props) => {
             const config = {
               success: true,
               message: 'Pin Success',
+              disableAmount: true,
             };
 
             // toggleCommonReciept(config);
@@ -229,6 +230,7 @@ const ReloadContainer = (props: Props) => {
             const config = {
               success: false,
               message: 'Pin Success',
+              disableAmount: true,
             };
 
             // toggleCommonReciept(config);
