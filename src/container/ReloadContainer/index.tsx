@@ -376,7 +376,7 @@ const ReloadContainer = (props: Props) => {
           {tabOption == 'reload' ? (
             <View className="pt-[20px] flex-1">
               <Text className="text-[#333333] font-semibold text-[14px] font-['Poppins-SemiBold']">
-                Reload Amount
+                Reload Amounts
               </Text>
               {!!onlineDenomination && (
                 <FlatList
