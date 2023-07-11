@@ -74,12 +74,14 @@ const formatNumber = (numb: number) => {
   return theNum.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 };
 
-const ReloadContainer = (props: Props) => {
+const ReloadContainer = (props: any) => {
+  const {defaultTab} = props.route.params || 'reload';
+  console.log('default tab', props.route.params);
   let {navigation} = props;
   // const params = navigation && navigation.state && navigation.state.params;
   // const [selectedReloadValue, setSelectedReloadValue] = useState<ItemData>();
   const [pinValue, updatePinValue] = useState<string>('');
-  const [tabOption, setTabOption] = useState<string>('reload');
+  const [tabOption, setTabOption] = useState<string>(defaultTab);
   const [ErrorResp, setErrorResp] = useState<boolean>(false);
   const {updateFrameHeight} = useZustandStoreRemote();
   const {ssi, userRecord} = useTokeStore();

@@ -15,6 +15,7 @@ const HomeScreen = () => {
         <Stack.Screen
           name="Reload"
           component={ReloadContainer}
+          initialParams={{defaultTab: 'reload'}}
           options={{
             headerShown: false,
           }}></Stack.Screen>
